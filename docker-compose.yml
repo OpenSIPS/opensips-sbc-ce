@@ -70,17 +70,16 @@ services:
       localnetwork:
         ipv4_address: ${CP_IP}
 
-  rtpproxy:
-    image: sippylabs/rtpproxy
-    container_name: rtpproxy
-    env_file:
-      - .env
-    ports:
-      - "${MINPORT}-${MAXPORT}:${MINPORT}-${MAXPORT}/udp"
-    networks:
-      localnetwork:
-        ipv4_address: ${RTPPROXY_IP}
-    command: -s udp:${RTPPROXY_IP}:${RTPPROXY_PORT} -l ${RTPPROXY_IP} -m ${MINPORT} -M ${MAXPORT} -A ${HOST_IP}
+  rtpengine:
+      image: fonoster/rtpengine:latest
+      environment:
+        RTPENGINE_PUBLIC_IP: ${HOST_IP}
+        RTPENGINE_PORT_MIN: ${MINPORT}
+        RTPENGINE_PORT_MAX: ${MAXPORT}
+        RTPENGINE_BIND_HTTP_PORT: ${RTPENGINE_PORT}
+      networks:
+        localnetwork:
+          ipv4_address: ${RTPPROXY_IP}
 
 volumes:
   db:
