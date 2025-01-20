@@ -82,20 +82,6 @@ services:
         ipv4_address: ${RTPPROXY_IP}
     command: -s udp:${RTPPROXY_IP}:${RTPPROXY_PORT} -l ${RTPPROXY_IP} -m ${MINPORT} -M ${MAXPORT} -A ${HOST_IP}
 
-  freeswitch:
-    image: opensips/freeswitch-ce
-    container_name: freeswitch
-    env_file:
-      - .env
-    volumes:
-      - ./etc/freeswitch/dialplan:/etc/freeswitch/dialplan
-      - ./etc/freeswitch/conf:/docker-entrypoint.d
-    cap_add:
-      - SYS_NICE
-    networks:
-      localnetwork:
-        ipv4_address: ${FREESWITCH_IP}
-
 volumes:
   db:
 
