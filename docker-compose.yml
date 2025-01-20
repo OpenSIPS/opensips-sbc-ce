@@ -1,0 +1,109 @@
+services:
+  mysql:
+    build:
+      dockerfile_inline: |
+        FROM mysql:latest
+        # get the latest/newest opensips-mysql-dbschema package
+        RUN echo  "https://yum.opensips.org/3.6/nightly/el/9/x86_64/$(curl -s -L https://yum.opensips.org/3.6/nightly/el/9/x86_64 | grep -oE "opensips-mysql-dbschema[^r]*.rpm" | tail -1)" | xargs rpm -i
+    container_name: mysql
+    volumes:
+      - ./etc/mysql:/docker-entrypoint-initdb.d
+      - db:/var/lib/mysql
+    ports:
+      - ${MYSQL_PORT}:3306
+    env_file:
+      - .env
+    environment:
+      - MYSQL_IP=localhost
+    healthcheck:
+      test: mysql -u ${MYSQL_USER} -p'${MYSQL_PASSWORD}' opensips -e 'SHOW TABLES LIKE "location"' 2>&1 | grep -q location
+      interval: 10s
+      timeout: 1s
+      retries: 5
+      start_period: 20s
+    networks:
+      localnetwork:
+        ipv4_address: ${MYSQL_IP}
+
+  opensips:
+    image: opensips/opensips:cp-all-tools
+    container_name: opensips
+    volumes:
+      - ./etc/opensips:/etc/opensips
+    ports:
+      - 5060:5060/udp
+      - 5060:5060/tcp
+      - 8888:8888
+    expose:
+      - 9060/tcp
+    env_file:
+      - .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+    command:
+      - -p /etc/opensips/substenv.sh
+    networks:
+      localnetwork:
+        ipv4_address: ${OPENSIPS_IP}
+
+  opensips-cp:
+    build:
+      context: ./etc/opensips-cp/image
+      dockerfile_inline: FROM opensips/opensips-cp:latest
+    container_name: opensips-cp
+    env_file:
+      - .env
+    ports:
+      - 80:80
+    expose:
+      - 9060/tcp
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./etc/opensips-cp/docker-entrypoint.d:/docker-entrypoint.d
+      - type: bind
+        source: ./etc/mysql/functions
+        target: /docker-entrypoint.d/functions
+    networks:
+      localnetwork:
+        ipv4_address: ${CP_IP}
+
+  rtpproxy:
+    image: sippylabs/rtpproxy
+    container_name: rtpproxy
+    env_file:
+      - .env
+    ports:
+      - "${MINPORT}-${MAXPORT}:${MINPORT}-${MAXPORT}/udp"
+    networks:
+      localnetwork:
+        ipv4_address: ${RTPPROXY_IP}
+    command: -s udp:${RTPPROXY_IP}:${RTPPROXY_PORT} -l ${RTPPROXY_IP} -m ${MINPORT} -M ${MAXPORT} -A ${HOST_IP}
+
+  freeswitch:
+    image: opensips/freeswitch-ce
+    container_name: freeswitch
+    env_file:
+      - .env
+    volumes:
+      - ./etc/freeswitch/dialplan:/etc/freeswitch/dialplan
+      - ./etc/freeswitch/conf:/docker-entrypoint.d
+    cap_add:
+      - SYS_NICE
+    networks:
+      localnetwork:
+        ipv4_address: ${FREESWITCH_IP}
+
+volumes:
+  db:
+
+networks:
+  localnetwork:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: "${HOST_IP}"
+    ipam:
+      config:
+        - subnet: ${NETWORK}

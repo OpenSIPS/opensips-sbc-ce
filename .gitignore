@@ -1,0 +1,3 @@
+etc/opensips/opensips-cli.cfg
+logs/
+etc/opensips-cp/docker-entrypoint.d/functions
