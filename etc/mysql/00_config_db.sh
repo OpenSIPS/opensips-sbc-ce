@@ -15,7 +15,7 @@ TABLE_FILES=(
     "domain-create.sql"
     "drouting-create.sql"
     "presence-create.sql"
-    "rtpproxy-create.sql"
+    "rtpengine-create.sql"
     "sqlops-create.sql"
     "usrloc-create.sql"
 )

@@ -76,10 +76,11 @@ services:
         RTPENGINE_PUBLIC_IP: ${HOST_IP}
         RTPENGINE_PORT_MIN: ${MINPORT}
         RTPENGINE_PORT_MAX: ${MAXPORT}
-        RTPENGINE_BIND_HTTP_PORT: ${RTPENGINE_PORT}
+        RTPENGINE_LOG_LEVEL: 7
       networks:
         localnetwork:
-          ipv4_address: ${RTPPROXY_IP}
+          ipv4_address: ${RTPENGINE_IP}
+      command: rtpengine --listen-udp=${RTPENGINE_PORT}
 
 volumes:
   db:

@@ -129,11 +129,11 @@ $config_modules 	= array (
 				"name"			=> "Monit"
 			),
 			"rtpproxy"			=> array (
-				"enabled"		=> true,
+				"enabled"		=> false,
 				"name"			=> "RTPProxy"
 			),
 			"rtpengine"			=> array (
-				"enabled"		=> false,
+				"enabled"		=> true,
 				"name"			=> "RTPEngine"
 			),
 			"siptrace"			=> array (
