@@ -164,9 +164,13 @@ $config_modules 	= array (
 				"enabled"		=> false,
 				"name"			=> "TCP Management"
 			),
-			"tracer"				=> array (
+			"tracer"			=> array (
 				"enabled"		=> false,
 				"name"			=> "Tracer"
+			),
+			"dialplan_dispatcher" => array (
+				"enabled"		=> true,
+				"name"			=> "SIP Mappings"
 			),
 		)
 	),
