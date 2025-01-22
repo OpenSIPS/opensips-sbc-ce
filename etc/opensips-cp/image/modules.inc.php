@@ -98,7 +98,7 @@ $config_modules 	= array (
 			),
 			"dispatcher"			=> array (
 				"enabled"		=> true,
-				"name"			=> "Dispatcher"
+				"name"			=> "Core Servers"
 			),
 			"domains"			=> array (
 				"enabled"		=> true,
@@ -171,6 +171,10 @@ $config_modules 	= array (
 			"dialplan_dispatcher" => array (
 				"enabled"		=> true,
 				"name"			=> "SIP Mappings"
+			),
+			"dispatcher"	=> array(
+				"enabled"	=> True,
+				"name"		=> "Core Servers"
 			),
 		)
 	),
