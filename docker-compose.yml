@@ -72,13 +72,14 @@ services:
 
   rtpengine:
       image: fonoster/rtpengine:latest
+      container_name: rtpengine
       environment:
         RTPENGINE_PUBLIC_IP: ${HOST_IP}
         RTPENGINE_PORT_MIN: ${MINPORT}
         RTPENGINE_PORT_MAX: ${MAXPORT}
         RTPENGINE_BIND_NG_PORT: ${RTPENGINE_PORT}
         RTPENGINE_BIND_NG_IP: ${RTPENGINE_IP}
-        RTPENGINE_LOG_LEVEL: 7
+        RTPENGINE_LOG_LEVEL: ${RTPENGINE_LOG_LEVEL}
       networks:
         localnetwork:
           ipv4_address: ${RTPENGINE_IP}
