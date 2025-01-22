@@ -62,7 +62,7 @@ Example table: table1
 ####################################################################################
 */
 
-$custom_config[$module_id][0]['custom_table'] = "dialplan";
+$custom_config[$module_id][0]['custom_table'] = "dialplan_sip";
 $custom_config[$module_id][0]['custom_table_primary_key'] = "id";
 $custom_config[$module_id][0]['custom_table_order_by'] = $custom_config[$module_id][0]['custom_table_primary_key'];
 $custom_config[$module_id][0]['per_page'] = 25;
