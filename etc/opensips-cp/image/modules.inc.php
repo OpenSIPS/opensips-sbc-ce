@@ -53,7 +53,7 @@ $config_modules 	= array (
 		)
 	),
 	"users"			=> array (
-		"enabled" 	=> true,
+		"enabled" 	=> false,
 		"name" 		=> "Users",
 		"icon"		=> "images/icon-user.svg",
 		"modules"	=> array (
@@ -85,7 +85,7 @@ $config_modules 	= array (
 				"name"			=> "Callcenter"
 			),
 			"cdrviewer"			=> array (
-				"enabled"		=> true,
+				"enabled"		=> false,
 				"name"			=> "CDR Viewer"
 			),
 			"dialog"			=> array (
@@ -101,7 +101,7 @@ $config_modules 	= array (
 				"name"			=> "Core Servers"
 			),
 			"domains"			=> array (
-				"enabled"		=> true,
+				"enabled"		=> false,
 				"name"			=> "Domains"
 			),
 			"drouting"			=> array (
