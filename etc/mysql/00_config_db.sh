@@ -12,6 +12,7 @@ TABLE_FILES=(
     "dialog-create.sql"
     "dialplan-create.sql"
     "dispatcher-create.sql"
+    "permissions-create.sql"
     "domain-create.sql"
     "drouting-create.sql"
     "presence-create.sql"
