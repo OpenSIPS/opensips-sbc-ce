@@ -1,0 +1,7 @@
+---
+timeout: 40
+
+tasks:
+  - name: OpenSIPS Core Server
+    type: opensips
+    config_file: scripts/opensips-core.cfg

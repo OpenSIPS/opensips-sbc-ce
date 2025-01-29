@@ -1,0 +1,34 @@
+---
+init_tasks:
+  - name: Add test core server
+    type: mysql-client
+    script: init_tasks/add_core_server.sh
+    args:
+      - sip:{{ core_ip }}:{{ core_port }}
+
+cleanup_tasks:
+  - name: Remove test core server
+    type: mysql-client
+    script: cleanup_tasks/remove_core_server.sh
+    args:
+      - sip:{{ core_ip }}:{{ core_port }}
+
+defaults:
+  opensips:
+    image: opensips/opensips:sipssert
+  opensips-cli:
+    mi_ip: {{ opensips_ip }}
+    options:
+      database_user_url: mysql://{{ mysql_user }}:{{ mysql_password }}@{{ opensips_ip }}/{{ database }}
+  uac-sipp:
+    proxy: {{ opensips_ip }}:{{ opensips_port }}
+    keys:
+      domain: {{ default_domain }}
+      caller: {{ caller }}
+      callee: {{ callee }}
+  mysql-client:
+    host: {{ opensips_ip }}
+    port: {{ mysql_port }}
+    user: {{ mysql_user }}
+    password: {{ mysql_password }}
+    database: {{ database }}

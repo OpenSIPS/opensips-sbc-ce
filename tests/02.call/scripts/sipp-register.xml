@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE scenario SYSTEM "sipp.dtd">
+
+<scenario name="UAC: Registration Scenario">
+  <Global variables="domain" />
+  <Reference variables="domain" />
+
+  <send>
+     <![CDATA[
+
+       REGISTER sip:[domain] SIP/2.0
+       Via: SIP/2.0/[transport] [local_ip]:[local_port]
+       To: <sip:[service]@[domain]>
+       From: <sip:[service]@[domain]>;tag=[call_number]
+       Contact: <sip:[service]@[local_ip]:[local_port]>;transport=[transport]
+       Expires: 60
+       Call-ID: [scenario]-register-[service]:///[call_id]
+       Supported: path
+       Max-Forwards: 70
+       CSeq: 1 REGISTER
+       Content-Length: 0
+
+     ]]>
+  </send>
+
+  <recv response="401" auth="true">
+  </recv>
+
+  <send>
+     <![CDATA[
+
+       REGISTER sip:[domain] SIP/2.0
+       Via: SIP/2.0/[transport] [local_ip]:[local_port]
+       To: <sip:[service]@[domain]>
+       From: <sip:[service]@[domain]>;tag=[call_number]
+       Contact: <sip:[service]@[local_ip]:[local_port]>;transport=[transport]
+       Expires: 60
+       [authentication]
+       Call-ID: [scenario]-register-[service]:///[call_id]
+       Supported: path
+       Max-Forwards: 70
+       CSeq: 2 REGISTER
+       Content-Length: 0
+
+     ]]>
+  </send>
+
+
+  <recv response="200">
+  </recv>
+
+</scenario>

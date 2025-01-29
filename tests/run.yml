@@ -1,0 +1,7 @@
+---
+logging:
+  controller:
+    level: DEBUG
+#    console: true
+os:
+  - ubuntu-latest
