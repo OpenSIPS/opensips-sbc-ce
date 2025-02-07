@@ -1,0 +1,66 @@
+---
+timeout: 40
+
+tasks:
+  - name: OpenSIPS Core Server
+    type: opensips
+    config_file: scripts/opensips-core.cfg
+    args: -p /etc/opensips/scripts/substenv.sh
+    env:
+      CORE_IP: {{ core_ip }}
+      CORE_PORT: {{ core_port }}
+      DOMAIN: {{ default_domain }}
+      CALLER: {{ caller }}
+      CALLEE: {{ callee }}
+      CALLER_PASSWORD: "{{ caller_password }}"
+      CALLEE_PASSWORD: "{{ callee_password }}"
+    network: sbc-br
+    ip: {{ core_ip }}
+
+  - name: Register caller
+    type: uac-sipp
+    username: {{ caller }}
+    password: "{{ caller_password }}"
+    domain: {{ default_domain }}
+    config_file: scripts/sipp-register.xml
+    ip: {{ caller_ip }}
+    port: {{ caller_port }}
+    require:
+      - after:
+          task: OpenSIPS Core Server
+
+  - name: Register callee
+    type: uac-sipp
+    username: {{ callee }}
+    password: "{{ callee_password }}"
+    domain: {{ default_domain }}
+    config_file: scripts/sipp-register.xml
+    ip: {{ callee_ip }}
+    port: {{ callee_port }}
+    require:
+      - after:
+          task: OpenSIPS Core Server
+
+  - name: Caller UAC
+    type: uac-sipp
+    username: {{ caller }}
+    password: "{{ caller_password }}"
+    config_file: scripts/caller.xml
+    ip: {{ caller_ip }}
+    port: {{ caller_port }}
+    require:
+      - after:
+          task: Register caller
+  
+  - name: Callee UAC
+    type: uas-sipp
+    username: {{ callee }}
+    password: "{{ callee_password }}"
+    config_file: scripts/callee.xml
+    ip: {{ callee_ip }}
+    port: {{ callee_port }}
+    require:
+      - after:
+          task: Register callee
+      - started:
+          task: Caller UAC

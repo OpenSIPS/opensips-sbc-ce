@@ -5,13 +5,43 @@ init_tasks:
     script: init_tasks/add_core_server.sh
     args:
       - sip:{{ core_ip }}:{{ core_port }}
+      - {{ default_domain }}
+
+  - name: Reload dispatcher
+    type: opensips-mi
+    args: ds_reload
+    require:
+      after:
+        task: Add test core server
+
+  - name: Reload dialplan
+    type: opensips-mi
+    args: dp_reload
+    require:
+      after:
+        task: Add test core server
 
 cleanup_tasks:
   - name: Remove test core server
     type: mysql-client
-    script: cleanup_tasks/remove_core_server.sh
+    script: cleanup_tasks/delete_core_server.sh
     args:
       - sip:{{ core_ip }}:{{ core_port }}
+      - {{ default_domain }}
+
+  - name: Reload dispatcher
+    type: opensips-mi
+    args: ds_reload
+    require:
+      after:
+        task: Remove test core server
+
+  - name: Reload dialplan
+    type: opensips-mi
+    args: dp_reload
+    require:
+      after:
+        task: Remove test core server
 
 defaults:
   opensips:
@@ -20,6 +50,12 @@ defaults:
     mi_ip: {{ opensips_ip }}
     options:
       database_user_url: mysql://{{ mysql_user }}:{{ mysql_password }}@{{ opensips_ip }}/{{ database }}
+  opensips-mi:
+    mi_ip: {{ mi_ip }}
+    env:
+      CONN: http
+      URL: http://{{ mi_ip }}:8888/mi
+    network: sbc-br    
   uac-sipp:
     proxy: {{ opensips_ip }}:{{ opensips_port }}
     keys:
@@ -27,8 +63,8 @@ defaults:
       caller: {{ caller }}
       callee: {{ callee }}
   mysql-client:
-    host: {{ opensips_ip }}
-    port: {{ mysql_port }}
+    host: {{ mysql_ip }}
     user: {{ mysql_user }}
     password: {{ mysql_password }}
     database: {{ database }}
+    network: sbc-br

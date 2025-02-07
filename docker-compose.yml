@@ -9,8 +9,6 @@ services:
     volumes:
       - ./etc/mysql:/docker-entrypoint-initdb.d
       - db:/var/lib/mysql
-    ports:
-      - ${MYSQL_PORT}:3306
     env_file:
       - .env
     environment:
@@ -33,7 +31,6 @@ services:
     ports:
       - 5060:5060/udp
       - 5060:5060/tcp
-      - 8888:8888
     expose:
       - 9060/tcp
     env_file:
@@ -89,9 +86,11 @@ volumes:
 
 networks:
   localnetwork:
+    name: sbc-br
     driver: bridge
     driver_opts:
       com.docker.network.bridge.host_binding_ipv4: "${HOST_IP}"
+      com.docker.network.bridge.name: sbc-br
     ipam:
       config:
         - subnet: ${NETWORK}

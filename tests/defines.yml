@@ -1,17 +1,18 @@
 caller: caller
-caller_password: 123456
+caller_password: simplepass
 caller_port: 5065
 callee: callee
-callee_password: 123456
+callee_password: simplepass
 callee_port: 5066
 default_domain: domain.test
-core_ip: {{ 'HOST_IP' | getenv }}
+core_ip: {{ 'CORE_IP' | getenv }}
 core_port: 5080
 opensips_ip: {{ 'HOST_IP' | getenv }}
 opensips_port: 5060
+mi_ip: {{ 'OPENSIPS_IP' | getenv }}
 caller_ip: {{ 'HOST_IP' | getenv }}
 callee_ip: {{ 'HOST_IP' | getenv }}
 mysql_user: {{ 'MYSQL_USER' | getenv }}
 mysql_password: {{ 'MYSQL_PASSWORD' | getenv }}
-mysql_port: {{ 'MYSQL_PORT' | getenv }}
+mysql_ip: {{ 'MYSQL_IP' | getenv }}
 database: opensips
