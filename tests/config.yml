@@ -62,6 +62,7 @@ defaults:
       domain: {{ default_domain }}
       caller: {{ caller }}
       callee: {{ callee }}
+      run_id: "{{ run_id }}"
   mysql-client:
     host: {{ mysql_ip }}
     user: {{ mysql_user }}

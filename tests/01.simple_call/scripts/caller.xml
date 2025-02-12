@@ -13,7 +13,7 @@
       Contact: <sip:[caller]@[local_ip]:[local_port]>
       To: <sip:[callee]@[domain]>
       From: <sip:[caller]@[domain];transport=[transport]>;tag=[call_number]
-      Call-ID: [scenario]:///[call_id]
+      Call-ID: [scenario]-[run_id]:///[call_id]
       CSeq: 1 INVITE
       Allow: INVITE, ACK, CANCEL, BYE, NOTIFY, REFER, MESSAGE, OPTIONS, INFO, SUBSCRIBE
       Content-Type: application/sdp
@@ -55,7 +55,7 @@
       Contact: <sip:[caller]@[local_ip]:[local_port]>
       To: <sip:[callee]@[domain]>
       From: <sip:[caller]@[domain];transport=[transport]>;tag=[call_number]
-      Call-ID: [scenario]:///[call_id]
+      Call-ID: [scenario]-[run_id]:///[call_id]
       CSeq: 1 ACK
       Content-Length: 0
     ]]>
@@ -70,7 +70,7 @@
       Contact: <sip:[caller]@[local_ip]:[local_port]>
       To: <sip:[callee]@[domain]>
       From: <sip:[caller]@[domain];transport=[transport]>;tag=[call_number]
-      Call-ID: [scenario]:///[call_id]
+      Call-ID: [scenario]-[run_id]:///[call_id]
       CSeq: 2 INVITE
       Allow: INVITE, ACK, CANCEL, BYE, NOTIFY, REFER, MESSAGE, OPTIONS, INFO, SUBSCRIBE
       Content-Type: application/sdp
@@ -122,7 +122,7 @@
       [routes]
       CSeq: 2 ACK
       Contact: <sip:[caller]@[local_ip]:[local_port]>
-      Call-ID: [scenario]:///[call_id]
+      Call-ID: [scenario]-[run_id]:///[call_id]
       Max-Forwards: 70
       Content-Length: 0
 
@@ -144,7 +144,7 @@
       [routes]
       CSeq: 3 BYE
       Contact: <sip:[caller]@[local_ip]:[local_port]>
-      Call-ID: [scenario]:///[call_id]
+      Call-ID: [scenario]-[run_id]:///[call_id]
       Max-Forwards: 70
       Content-Length: 0
 

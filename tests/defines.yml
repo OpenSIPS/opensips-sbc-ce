@@ -16,3 +16,4 @@ mysql_user: {{ 'MYSQL_USER' | getenv }}
 mysql_password: {{ 'MYSQL_PASSWORD' | getenv }}
 mysql_ip: {{ 'MYSQL_IP' | getenv }}
 database: opensips
+run_id: {{ range(1000, 9999) | random }}
