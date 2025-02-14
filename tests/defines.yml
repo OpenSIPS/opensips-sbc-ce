@@ -7,13 +7,17 @@ callee_port: 5066
 default_domain: domain.test
 core_ip: {{ 'CORE_IP' | getenv }}
 core_port: 5080
+failover_ip: {{ 'FAILOVER_IP' | getenv }}
+failover_port: 5081
 opensips_ip: {{ 'HOST_IP' | getenv }}
 opensips_port: 5060
 mi_ip: {{ 'OPENSIPS_IP' | getenv }}
-caller_ip: {{ 'HOST_IP' | getenv }}
-callee_ip: {{ 'HOST_IP' | getenv }}
+caller_ip: {{ 'CALLER_IP' | getenv }}
+callee_ip: {{ 'CALLEE_IP' | getenv }}
 mysql_user: {{ 'MYSQL_USER' | getenv }}
 mysql_password: {{ 'MYSQL_PASSWORD' | getenv }}
 mysql_ip: {{ 'MYSQL_IP' | getenv }}
 database: opensips
 run_id: {{ range(1000, 9999) | random }}
+users_network: {{ 'USERS_NETWORK' | getenv }}
+users_network_gw: {{ 'USERS_NETWORK_GW' | getenv }}

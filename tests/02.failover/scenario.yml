@@ -1,0 +1,32 @@
+---
+timeout: 40
+
+tasks:
+  - name: OpenSIPS Core Server
+    type: opensips
+    config_file: scripts/opensips-error.cfg
+    args: -p /etc/opensips/scripts/substenv.sh
+    network: sbc-br
+    ip: {{ core_ip }}
+
+  - name: OpenSIPS Failover Server
+    type: opensips
+    config_file: scripts/opensips-core.cfg
+    args: -p /etc/opensips/scripts/substenv.sh
+    network: sbc-br
+    ip: {{ failover_ip }}
+
+  - name: Register caller
+    type: uac-sipp
+    username: {{ caller }}
+    password: "{{ caller_password }}"
+    domain: {{ default_domain }}
+    config_file: scripts/sipp-register.xml
+    ip: {{ caller_ip }}
+    port: {{ caller_port }}
+    require:
+      - after:
+          task: OpenSIPS Core Server
+      - after:
+          task: OpenSIPS Failover Server
+    network: exterior

@@ -28,6 +28,7 @@ tasks:
     require:
       - after:
           task: OpenSIPS Core Server
+    network: exterior
 
   - name: Register callee
     type: uac-sipp
@@ -40,6 +41,7 @@ tasks:
     require:
       - after:
           task: OpenSIPS Core Server
+    network: exterior
 
   - name: Caller UAC
     type: uac-sipp
@@ -51,7 +53,8 @@ tasks:
     require:
       - after:
           task: Register caller
-  
+    network: exterior
+
   - name: Callee UAC
     type: uas-sipp
     username: {{ callee }}
@@ -64,3 +67,4 @@ tasks:
           task: Register callee
       - started:
           task: Caller UAC
+    network: exterior

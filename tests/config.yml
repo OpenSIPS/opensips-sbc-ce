@@ -7,6 +7,13 @@ init_tasks:
       - sip:{{ core_ip }}:{{ core_port }}
       - {{ default_domain }}
 
+  - name: Add failover server
+    type: mysql-client
+    script: init_tasks/add_core_server.sh
+    args:
+      - sip:{{ failover_ip }}:{{ failover_port }}
+      - {{ default_domain }}
+
   - name: Reload dispatcher
     type: opensips-mi
     args: ds_reload
@@ -29,6 +36,13 @@ cleanup_tasks:
       - sip:{{ core_ip }}:{{ core_port }}
       - {{ default_domain }}
 
+  - name: Remove failover server
+    type: mysql-client
+    script: cleanup_tasks/delete_core_server.sh
+    args:
+      - sip:{{ failover_ip }}:{{ failover_port }}
+      - {{ default_domain }}
+
   - name: Reload dispatcher
     type: opensips-mi
     args: ds_reload
@@ -46,6 +60,16 @@ cleanup_tasks:
 defaults:
   opensips:
     image: opensips/opensips:sipssert
+    env:
+      CORE_IP: {{ core_ip }}
+      CORE_PORT: {{ core_port }}
+      FAILOVER_IP: {{ failover_ip }}
+      FAILOVER_PORT: {{ failover_port }}
+      DOMAIN: {{ default_domain }}
+      CALLER: {{ caller }}
+      CALLEE: {{ callee }}
+      CALLER_PASSWORD: "{{ caller_password }}"
+      CALLEE_PASSWORD: "{{ callee_password }}"
   opensips-cli:
     mi_ip: {{ opensips_ip }}
     options:
@@ -69,3 +93,8 @@ defaults:
     password: {{ mysql_password }}
     database: {{ database }}
     network: sbc-br
+
+bridge_networks:
+  - name: exterior
+    subnet: {{ users_network }}
+    gateway: {{ users_network_gw }}
