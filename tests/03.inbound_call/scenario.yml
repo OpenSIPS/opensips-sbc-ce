@@ -1,0 +1,11 @@
+---
+timeout: 40
+
+tasks:
+  - name: Gateway UAC
+    type: uac-sipp
+    config_file: scripts/gateway.xml
+    ip: {{ gateway_ip }}
+    keys:
+      callee_did: 1234567890
+    network: pstn

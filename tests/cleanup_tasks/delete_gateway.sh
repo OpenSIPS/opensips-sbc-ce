@@ -1,0 +1,1 @@
+mysql opensips -e "DELETE FROM dr_gateways WHERE address = '$1';"

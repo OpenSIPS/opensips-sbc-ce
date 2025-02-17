@@ -28,6 +28,21 @@ init_tasks:
       after:
         task: Add test core server
 
+  - name: Add gateway
+    type: mysql-client
+    script: init_tasks/add_gateway.sh
+    args:
+      - gw-domain-test
+      - sip:{{ gateway_ip }}:{{ gateway_port }}
+      - 'Gateway Test 1'
+
+  - name: Reload dynamic routing
+    type: opensips-mi
+    args: dr_reload
+    require:
+      after:
+        task: Add gateway
+
 cleanup_tasks:
   - name: Remove test core server
     type: mysql-client
@@ -57,9 +72,21 @@ cleanup_tasks:
       after:
         task: Remove test core server
 
+  - name: Remove gateway
+    type: mysql-client
+    script: cleanup_tasks/delete_gateway.sh
+    args: 'sip:{{ gateway_ip }}:{{ gateway_port }}'
+
+  - name: Reload dynamic routing
+    type: opensips-mi
+    args: dr_reload
+    require:
+      after:
+        task: Remove gateway
+
 defaults:
   opensips:
-    image: opensips/opensips:sipssert
+    image: opensips/opensips:cp-all-tools
     env:
       CORE_IP: {{ core_ip }}
       CORE_PORT: {{ core_port }}
@@ -98,3 +125,7 @@ bridge_networks:
   - name: exterior
     subnet: {{ users_network }}
     gateway: {{ users_network_gw }}
+
+  - name: pstn
+    subnet: 192.168.2.0/24
+    gateway: 192.168.2.1

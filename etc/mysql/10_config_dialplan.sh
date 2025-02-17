@@ -20,6 +20,3 @@ add_dp_rule() {
 
 add_dp_rule DP_DID '^(\\+|00|011)?[1-9][0-9]{6,}$' '^(\\+|00|011)?([1-9][0-9]{6,})$' '\\2'
 add_dp_rule DP_USER '^[a-zA-Z][a-zA-Z0-9\\-_\\.]{4,}$'
-add_dp_rule DP_DND_ON '^\\*78$'
-add_dp_rule DP_DND_OFF '^\\*79$'
-add_dp_rule DP_VMLISTEN '^\\*98$'

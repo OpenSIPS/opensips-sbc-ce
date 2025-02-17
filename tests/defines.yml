@@ -21,3 +21,5 @@ database: opensips
 run_id: {{ range(1000, 9999) | random }}
 users_network: {{ 'USERS_NETWORK' | getenv }}
 users_network_gw: {{ 'USERS_NETWORK_GW' | getenv }}
+gateway_ip: 192.168.2.100
+gateway_port: 5060
