@@ -2,6 +2,35 @@
 timeout: 40
 
 tasks:
+  - name: OpenSIPS Core Server
+    type: opensips
+    config_file: scripts/opensips-error.cfg
+    args: -p /etc/opensips/scripts/substenv.sh
+    ip: {{ core_ip }}
+    network: core
+
+  - name: OpenSIPS Failover Server
+    type: opensips
+    config_file: scripts/opensips-core.cfg
+    args: -p /etc/opensips/scripts/substenv.sh
+    ip: {{ failover_ip }}
+    network: core
+
+  - name: Register callee
+    type: uac-sipp
+    username: {{ callee }}
+    password: "{{ callee_password }}"
+    domain: {{ default_domain }}
+    config_file: scripts/sipp-register.xml
+    ip: {{ callee_ip }}
+    port: {{ callee_port }}
+    require:
+      - after:
+          task: OpenSIPS Core Server
+      - after:
+          task: OpenSIPS Failover Server
+    network: exterior
+
   - name: Gateway UAC
     type: uac-sipp
     config_file: scripts/gateway.xml
@@ -9,3 +38,20 @@ tasks:
     keys:
       callee_did: 1234567890
     network: pstn
+    require:
+      - after:
+          task: Register callee
+
+  - name: Callee UAC
+    type: uas-sipp
+    username: {{ callee }}
+    password: "{{ callee_password }}"
+    config_file: scripts/callee.xml
+    ip: {{ callee_ip }}
+    port: {{ callee_port }}
+    require:
+      - after:
+          task: Register callee
+      - started:
+          task: Gateway UAC
+    network: exterior

@@ -6,14 +6,6 @@ tasks:
     type: opensips
     config_file: scripts/opensips-core.cfg
     args: -p /etc/opensips/scripts/substenv.sh
-    env:
-      CORE_IP: {{ core_ip }}
-      CORE_PORT: {{ core_port }}
-      DOMAIN: {{ default_domain }}
-      CALLER: {{ caller }}
-      CALLEE: {{ callee }}
-      CALLER_PASSWORD: "{{ caller_password }}"
-      CALLEE_PASSWORD: "{{ callee_password }}"
     ip: {{ core_ip }}
     network: core
 

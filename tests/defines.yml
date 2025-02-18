@@ -17,11 +17,14 @@ users_network: 192.168.0.0/24
 users_network_gw: 192.168.0.1
 caller_ip: 192.168.0.50
 callee_ip: 192.168.0.51
+callee_did: 1234567890
 core_network: 172.72.0.0/24
 core_network_gw: 172.72.0.1
 core_ip: 172.72.0.2
 core_port: 5080
 failover_ip: 172.72.0.3
 failover_port: 5081
+pstn_network: 192.168.2.0/24
+pstn_network_gw: 192.168.2.1
 gateway_ip: 192.168.2.100
 gateway_port: 5060

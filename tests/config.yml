@@ -14,19 +14,32 @@ init_tasks:
       - sip:{{ failover_ip }}:{{ failover_port }}
       - {{ default_domain }}
 
+  - name: Add DID mapping
+    type: mysql-client
+    script: init_tasks/add_did_mapping.sh
+    args:
+      - {{ callee_did }}
+    require:
+      after:
+        task: Add test core server
+      after:
+        task: Add failover server
+
   - name: Reload dispatcher
     type: opensips-mi
     args: ds_reload
     require:
       after:
         task: Add test core server
+      after:
+        task: Add failover server
 
   - name: Reload dialplan
     type: opensips-mi
     args: dp_reload
     require:
       after:
-        task: Add test core server
+        task: Add DID mapping
 
   - name: Add gateway
     type: mysql-client
@@ -57,6 +70,12 @@ cleanup_tasks:
     args:
       - sip:{{ failover_ip }}:{{ failover_port }}
       - {{ default_domain }}
+
+  - name: Remove DID mapping
+    type: mysql-client
+    script: cleanup_tasks/delete_did_mapping.sh
+    args:
+      - {{ callee_did }}
 
   - name: Reload dispatcher
     type: opensips-mi
@@ -95,6 +114,7 @@ defaults:
       DOMAIN: {{ default_domain }}
       CALLER: {{ caller }}
       CALLEE: {{ callee }}
+      CALLEE_DID: {{ callee_did }}
       CALLER_PASSWORD: "{{ caller_password }}"
       CALLEE_PASSWORD: "{{ callee_password }}"
   opensips-cli:
@@ -129,5 +149,5 @@ bridge_networks:
     gateway: {{ users_network_gw }}
 
   - name: pstn
-    subnet: 192.168.2.0/24
-    gateway: 192.168.2.1
+    subnet: {{ pstn_network }}
+    gateway: {{ pstn_network_gw }}
