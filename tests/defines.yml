@@ -5,21 +5,23 @@ callee: callee
 callee_password: simplepass
 callee_port: 5066
 default_domain: domain.test
-core_ip: {{ 'CORE_IP' | getenv }}
-core_port: 5080
-failover_ip: {{ 'FAILOVER_IP' | getenv }}
-failover_port: 5081
 opensips_ip: {{ 'HOST_IP' | getenv }}
 opensips_port: 5060
-mi_ip: {{ 'OPENSIPS_IP' | getenv }}
-caller_ip: {{ 'CALLER_IP' | getenv }}
-callee_ip: {{ 'CALLEE_IP' | getenv }}
+mi_ip: {{ 'HOST_IP' | getenv }}
 mysql_user: {{ 'MYSQL_USER' | getenv }}
 mysql_password: {{ 'MYSQL_PASSWORD' | getenv }}
 mysql_ip: {{ 'MYSQL_IP' | getenv }}
 database: opensips
 run_id: {{ range(1000, 9999) | random }}
-users_network: {{ 'USERS_NETWORK' | getenv }}
-users_network_gw: {{ 'USERS_NETWORK_GW' | getenv }}
+users_network: 192.168.0.0/24
+users_network_gw: 192.168.0.1
+caller_ip: 192.168.0.50
+callee_ip: 192.168.0.51
+core_network: 172.72.0.0/24
+core_network_gw: 172.72.0.1
+core_ip: 172.72.0.2
+core_port: 5080
+failover_ip: 172.72.0.3
+failover_port: 5081
 gateway_ip: 192.168.2.100
 gateway_port: 5060

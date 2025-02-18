@@ -14,8 +14,8 @@ tasks:
       CALLEE: {{ callee }}
       CALLER_PASSWORD: "{{ caller_password }}"
       CALLEE_PASSWORD: "{{ callee_password }}"
-    network: sbc-br
     ip: {{ core_ip }}
+    network: core
 
   - name: Register caller
     type: uac-sipp

@@ -106,7 +106,6 @@ defaults:
     env:
       CONN: http
       URL: http://{{ mi_ip }}:8888/mi
-    network: sbc-br    
   uac-sipp:
     proxy: {{ opensips_ip }}:{{ opensips_port }}
     keys:
@@ -119,9 +118,12 @@ defaults:
     user: {{ mysql_user }}
     password: {{ mysql_password }}
     database: {{ database }}
-    network: sbc-br
 
 bridge_networks:
+  - name: core
+    subnet: {{ core_network }}
+    gateway: {{ core_network_gw }}
+
   - name: exterior
     subnet: {{ users_network }}
     gateway: {{ users_network_gw }}

@@ -6,15 +6,15 @@ tasks:
     type: opensips
     config_file: scripts/opensips-error.cfg
     args: -p /etc/opensips/scripts/substenv.sh
-    network: sbc-br
     ip: {{ core_ip }}
+    network: core
 
   - name: OpenSIPS Failover Server
     type: opensips
     config_file: scripts/opensips-core.cfg
     args: -p /etc/opensips/scripts/substenv.sh
-    network: sbc-br
     ip: {{ failover_ip }}
+    network: core
 
   - name: Register caller
     type: uac-sipp

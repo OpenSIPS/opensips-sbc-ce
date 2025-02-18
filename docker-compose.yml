@@ -14,25 +14,18 @@ services:
     environment:
       - MYSQL_IP=localhost
     healthcheck:
-      test: mysql -u ${MYSQL_USER} -p'${MYSQL_PASSWORD}' opensips -e 'SHOW TABLES LIKE "location"' 2>&1 | grep -q location
+      test: mysql -h ${MYSQL_IP} -P ${MYSQL_PORT} -u ${MYSQL_USER} -p'${MYSQL_PASSWORD}' opensips -e 'SHOW TABLES LIKE "location"' 2>&1 | grep -q location
       interval: 10s
       timeout: 1s
       retries: 5
       start_period: 20s
-    networks:
-      localnetwork:
-        ipv4_address: ${MYSQL_IP}
+    network_mode: host
 
   opensips:
     image: opensips/opensips:cp-all-tools
     container_name: opensips
     volumes:
       - ./etc/opensips:/etc/opensips
-    ports:
-      - 5060:5060/udp
-      - 5060:5060/tcp
-    expose:
-      - 9060/tcp
     env_file:
       - .env
     depends_on:
@@ -40,9 +33,7 @@ services:
         condition: service_healthy
     command:
       - -p /etc/opensips/substenv.sh
-    networks:
-      localnetwork:
-        ipv4_address: ${OPENSIPS_IP}
+    network_mode: host
 
   opensips-cp:
     build:
@@ -51,10 +42,6 @@ services:
     container_name: opensips-cp
     env_file:
       - .env
-    ports:
-      - 80:80
-    expose:
-      - 9060/tcp
     depends_on:
       mysql:
         condition: service_healthy
@@ -63,9 +50,7 @@ services:
       - type: bind
         source: ./etc/mysql/functions
         target: /docker-entrypoint.d/functions
-    networks:
-      localnetwork:
-        ipv4_address: ${CP_IP}
+    network_mode: host
 
   rtpengine:
       image: fonoster/rtpengine:latest
@@ -75,22 +60,9 @@ services:
         RTPENGINE_PORT_MIN: ${MINPORT}
         RTPENGINE_PORT_MAX: ${MAXPORT}
         RTPENGINE_BIND_NG_PORT: ${RTPENGINE_PORT}
-        RTPENGINE_BIND_NG_IP: ${RTPENGINE_IP}
+        RTPENGINE_BIND_NG_IP: 0.0.0.0
         RTPENGINE_LOG_LEVEL: ${RTPENGINE_LOG_LEVEL}
-      networks:
-        localnetwork:
-          ipv4_address: ${RTPENGINE_IP}
+      network_mode: host
 
 volumes:
   db:
-
-networks:
-  localnetwork:
-    name: sbc-br
-    driver: bridge
-    driver_opts:
-      com.docker.network.bridge.host_binding_ipv4: "${HOST_IP}"
-      com.docker.network.bridge.name: sbc-br
-    ipam:
-      config:
-        - subnet: ${NETWORK}
