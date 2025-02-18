@@ -1,6 +1,18 @@
 ---
 timeout: 40
 
+init_tasks:
+  - name: Add DID mapping
+    type: mysql-client
+    script: scripts/add_did_mapping.sh
+    args: {{ callee_did }}
+
+  - name: Reload dialplan
+    type: opensips-mi
+    args: dp_reload
+    require:
+      - after:
+          task: Add DID mapping
 tasks:
   - name: OpenSIPS Core Server
     type: opensips
@@ -55,3 +67,16 @@ tasks:
       - started:
           task: Gateway UAC
     network: exterior
+
+cleanup_tasks:
+  - name: Remove DID mapping
+    type: mysql-client
+    script: scripts/delete_did_mapping.sh
+    args: {{ callee_did }}
+
+  - name: Reload dialplan
+    type: opensips-mi
+    args: dp_reload
+    require:
+      - after:
+          task: Remove DID mapping

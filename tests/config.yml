@@ -14,17 +14,6 @@ init_tasks:
       - sip:{{ failover_ip }}:{{ failover_port }}
       - {{ default_domain }}
 
-  - name: Add DID mapping
-    type: mysql-client
-    script: init_tasks/add_did_mapping.sh
-    args:
-      - {{ callee_did }}
-    require:
-      after:
-        task: Add test core server
-      after:
-        task: Add failover server
-
   - name: Reload dispatcher
     type: opensips-mi
     args: ds_reload
@@ -39,7 +28,7 @@ init_tasks:
     args: dp_reload
     require:
       after:
-        task: Add DID mapping
+        task: Reload dispatcher
 
   - name: Add gateway
     type: mysql-client
@@ -70,12 +59,6 @@ cleanup_tasks:
     args:
       - sip:{{ failover_ip }}:{{ failover_port }}
       - {{ default_domain }}
-
-  - name: Remove DID mapping
-    type: mysql-client
-    script: cleanup_tasks/delete_did_mapping.sh
-    args:
-      - {{ callee_did }}
 
   - name: Reload dispatcher
     type: opensips-mi
