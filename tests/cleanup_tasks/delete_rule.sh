@@ -1,0 +1,1 @@
+mysql opensips -e "DELETE FROM dr_rules WHERE prefix = '$1';"

@@ -23,12 +23,20 @@ init_tasks:
       after:
         task: Add failover server
 
+  - name: Add PSTN DID in dialplan
+    type: mysql-client
+    script: init_tasks/add_did.sh
+    args: {{ outgoing_did }}
+    require:
+      after:
+        task: Reload dispatcher
+
   - name: Reload dialplan
     type: opensips-mi
     args: dp_reload
     require:
       after:
-        task: Reload dispatcher
+        task: Add PSTN DID in dialplan
 
   - name: Add gateway
     type: mysql-client
@@ -38,12 +46,19 @@ init_tasks:
       - sip:{{ gateway_ip }}:{{ gateway_port }}
       - 'Gateway Test 1'
 
+  - name: Add rule
+    type: mysql-client
+    script: init_tasks/add_rule.sh
+    args:
+      - {{ outgoing_did }}
+      - gw-domain-test
+
   - name: Reload dynamic routing
     type: opensips-mi
     args: dr_reload
     require:
       after:
-        task: Add gateway
+        task: Add rule
 
 cleanup_tasks:
   - name: Remove test core server
@@ -60,6 +75,16 @@ cleanup_tasks:
       - sip:{{ failover_ip }}:{{ failover_port }}
       - {{ default_domain }}
 
+  - name: Remove PSTN DID in dialplan
+    type: mysql-client
+    script: cleanup_tasks/delete_did.sh
+    args: {{ outgoing_did }}
+    require:
+      after:
+        task: Remove test core server
+      after:
+        task: Remove failover server
+
   - name: Reload dispatcher
     type: opensips-mi
     args: ds_reload
@@ -72,12 +97,20 @@ cleanup_tasks:
     args: dp_reload
     require:
       after:
-        task: Remove test core server
+        task: Remove PSTN DID in dialplan
+
+  - name: Remove rule
+    type: mysql-client
+    script: cleanup_tasks/delete_rule.sh
+    args: {{ outgoing_did }}
 
   - name: Remove gateway
     type: mysql-client
     script: cleanup_tasks/delete_gateway.sh
     args: 'sip:{{ gateway_ip }}:{{ gateway_port }}'
+    require:
+      after:
+        task: Remove rule
 
   - name: Reload dynamic routing
     type: opensips-mi
@@ -100,6 +133,9 @@ defaults:
       CALLEE_DID: {{ callee_did }}
       CALLER_PASSWORD: "{{ caller_password }}"
       CALLEE_PASSWORD: "{{ callee_password }}"
+      OUTGOING_DID: {{ outgoing_did }}
+      SBC_IP: {{ opensips_ip }}
+      SBC_PORT: {{ opensips_port }}
   opensips-cli:
     mi_ip: {{ opensips_ip }}
     options:

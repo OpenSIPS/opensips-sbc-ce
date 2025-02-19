@@ -1,0 +1,1 @@
+mysql opensips -e "REPLACE INTO dialplan (dpid, match_op, match_exp) VALUES (1, 1, '$1');"

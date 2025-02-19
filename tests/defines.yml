@@ -28,3 +28,4 @@ pstn_network: 192.168.2.0/24
 pstn_network_gw: 192.168.2.1
 gateway_ip: 192.168.2.100
 gateway_port: 5060
+outgoing_did: 9876543210

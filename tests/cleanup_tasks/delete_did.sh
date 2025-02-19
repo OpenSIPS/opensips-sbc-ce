@@ -1,0 +1,1 @@
+mysql opensips -e "DELETE FROM dialplan_did WHERE match_exp = '$1';"

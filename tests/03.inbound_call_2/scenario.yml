@@ -34,7 +34,6 @@ tasks:
     type: uac-sipp
     username: {{ callee }}
     password: "{{ callee_password }}"
-    domain: {{ default_domain }}
     config_file: scripts/sipp-register.xml
     ip: {{ callee_ip }}
     port: {{ callee_port }}

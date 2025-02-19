@@ -1,12 +1,19 @@
 ---
-timeout: 40
+timeout: 60
 
 tasks:
   - name: OpenSIPS Core Server
     type: opensips
-    config_file: scripts/opensips-core.cfg
+    config_file: scripts/opensips-error.cfg
     args: -p /etc/opensips/scripts/substenv.sh
     ip: {{ core_ip }}
+    network: core
+
+  - name: OpenSIPS Failover Server
+    type: opensips
+    config_file: scripts/opensips-core.cfg
+    args: -p /etc/opensips/scripts/substenv.sh
+    ip: {{ failover_ip }}
     network: core
 
   - name: Register caller
@@ -19,42 +26,29 @@ tasks:
     require:
       - after:
           task: OpenSIPS Core Server
-    network: exterior
-
-  - name: Register callee
-    type: uac-sipp
-    username: {{ callee }}
-    password: "{{ callee_password }}"
-    config_file: scripts/sipp-register.xml
-    ip: {{ callee_ip }}
-    port: {{ callee_port }}
-    require:
       - after:
-          task: OpenSIPS Core Server
+          task: OpenSIPS Failover Server
     network: exterior
 
   - name: Caller UAC
     type: uac-sipp
+    config_file: scripts/caller.xml
     username: {{ caller }}
     password: "{{ caller_password }}"
-    config_file: scripts/caller.xml
     ip: {{ caller_ip }}
     port: {{ caller_port }}
+    keys:
+      did: {{ outgoing_did }}
     require:
       - after:
           task: Register caller
     network: exterior
 
-  - name: Callee UAC
+  - name: Gateway UAS
     type: uas-sipp
-    username: {{ callee }}
-    password: "{{ callee_password }}"
-    config_file: scripts/callee.xml
-    ip: {{ callee_ip }}
-    port: {{ callee_port }}
+    config_file: scripts/gateway.xml
+    ip: {{ gateway_ip }}
     require:
-      - after:
-          task: Register callee
       - started:
           task: Caller UAC
-    network: exterior
+    network: pstn

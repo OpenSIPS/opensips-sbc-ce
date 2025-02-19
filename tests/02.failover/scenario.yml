@@ -20,7 +20,6 @@ tasks:
     type: uac-sipp
     username: {{ caller }}
     password: "{{ caller_password }}"
-    domain: {{ default_domain }}
     config_file: scripts/sipp-register.xml
     ip: {{ caller_ip }}
     port: {{ caller_port }}
