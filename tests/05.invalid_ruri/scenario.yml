@@ -1,0 +1,15 @@
+---
+timeout: 60
+
+tasks:
+  - name: Caller UAC
+    type: uac-sipp
+    config_file: scripts/caller.xml
+    username: {{ caller }}
+    password: "{{ caller_password }}"
+    ip: {{ caller_ip }}
+    port: {{ caller_port }}
+    keys:
+      did: {{ outgoing_did }}
+      domain: invalid.
+    network: exterior
