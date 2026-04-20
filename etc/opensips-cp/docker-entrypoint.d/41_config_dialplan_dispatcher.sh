@@ -15,7 +15,5 @@ sed -i 's/$module_id = "your_module";/$module_id = "dialplan_dispatcher";/' /var
 cp /var/www/html/opensips-cp/web/common/tools/tviewer/samples/db.inc.php /var/www/html/opensips-cp/config/tools/system/dialplan_dispatcher/db.inc.php
 sed -i 's/$module_id = "your_module";/$module_id = "dialplan_dispatcher";/' /var/www/html/opensips-cp/config/tools/system/dialplan_dispatcher/db.inc.php
 
-cp /var/www/html/opensips-cp/web/common/tools/tviewer/samples/settings.inc.php /var/www/html/opensips-cp/config/tools/system/dialplan_dispatcher/settings.inc.php
-sed -i 's/$config->your_module/$config->dialplan_dispatcher/' /var/www/html/opensips-cp/config/tools/system/dialplan_dispatcher/settings.inc.php
-
+cp -u dialplan_dispatcher/settings.inc.php /var/www/html/opensips-cp/config/tools/system/dialplan_dispatcher/settings.inc.php
 cp -u dialplan_dispatcher/tviewer.inc.php /var/www/html/opensips-cp/config/tools/system/dialplan_dispatcher/tviewer.inc.php
