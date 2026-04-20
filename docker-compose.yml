@@ -56,11 +56,11 @@ services:
       image: fonoster/rtpengine:latest
       container_name: rtpengine
       environment:
-        RTPENGINE_PUBLIC_IP: ${HOST_IP}
+        RTPENGINE_PUBLIC_IP: ${RTPENGINE_PUBLIC_IP}
         RTPENGINE_PORT_MIN: ${MINPORT}
         RTPENGINE_PORT_MAX: ${MAXPORT}
         RTPENGINE_BIND_NG_PORT: ${RTPENGINE_PORT}
-        RTPENGINE_BIND_NG_IP: 0.0.0.0
+        RTPENGINE_BIND_NG_IP: ${RTPENGINE_IP}
         RTPENGINE_LOG_LEVEL: ${RTPENGINE_LOG_LEVEL}
       network_mode: host
 
