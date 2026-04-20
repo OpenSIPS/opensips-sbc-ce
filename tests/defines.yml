@@ -5,7 +5,7 @@ callee: callee
 callee_password: simplepass
 callee_port: 5066
 default_domain: domain.test
-opensips_ip: {{ 'HOST_IP' | getenv }}
+opensips_ip: {{ 'OPENSIPS_IP' | getenv }}
 opensips_port: 5060
 mi_ip: {{ 'HOST_IP' | getenv }}
 mysql_user: {{ 'MYSQL_USER' | getenv }}
