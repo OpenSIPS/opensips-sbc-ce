@@ -145,6 +145,7 @@ $custom_config[$module_id][0]['custom_table_column_defs'] = array (
 	"match_op" 	=> 	array (
 		"header" 			=> "Match OP",
 		"type"				=> "text",
+		"is_optional"			=> "y",
 		"show_in_add_form" 		=> false,
 		"show_in_edit_form"		=> false,
 		"searchable" 			=> false,
