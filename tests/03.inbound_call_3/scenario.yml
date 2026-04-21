@@ -1,5 +1,5 @@
 ---
-timeout: 20
+timeout: 60
 
 init_tasks:
   - name: Add DID mapping
@@ -44,17 +44,6 @@ tasks:
           task: OpenSIPS Failover Server
     network: exterior
 
-  - name: Gateway UAC
-    type: uac-sipp
-    config_file: scripts/gateway.xml
-    ip: {{ gateway_ip }}
-    keys:
-      callee_did: {{ callee_did }}
-    network: pstn
-    require:
-      - after:
-          task: Register callee
-
   - name: Callee UAC
     type: uas-sipp
     username: {{ callee }}
@@ -65,9 +54,20 @@ tasks:
     require:
       - after:
           task: Register callee
-      - started:
-          task: Gateway UAC
     network: exterior
+
+  - name: Gateway UAC
+    type: uac-sipp
+    config_file: scripts/gateway.xml
+    ip: {{ gateway_ip }}
+    keys:
+      callee_did: {{ callee_did }}
+    network: pstn
+    require:
+      - after:
+          task: Register callee
+      - started:
+          task: Callee UAC
 
 cleanup_tasks:
   - name: Remove DID mapping

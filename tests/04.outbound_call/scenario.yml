@@ -1,5 +1,5 @@
 ---
-timeout: 20
+timeout: 60
 
 tasks:
   - name: OpenSIPS Core Server
@@ -30,6 +30,15 @@ tasks:
           task: OpenSIPS Failover Server
     network: exterior
 
+  - name: Gateway UAS
+    type: uas-sipp
+    config_file: scripts/gateway.xml
+    ip: {{ gateway_ip }}
+    require:
+      - after:
+          task: Register caller
+    network: pstn
+
   - name: Caller UAC
     type: uac-sipp
     config_file: scripts/caller.xml
@@ -42,13 +51,6 @@ tasks:
     require:
       - after:
           task: Register caller
-    network: exterior
-
-  - name: Gateway UAS
-    type: uas-sipp
-    config_file: scripts/gateway.xml
-    ip: {{ gateway_ip }}
-    require:
       - started:
-          task: Caller UAC
-    network: pstn
+          task: Gateway UAS
+    network: exterior

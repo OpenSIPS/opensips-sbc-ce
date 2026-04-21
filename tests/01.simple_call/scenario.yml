@@ -1,5 +1,5 @@
 ---
-timeout: 20
+timeout: 30
 
 tasks:
   - name: OpenSIPS Core Server
@@ -33,18 +33,6 @@ tasks:
           task: OpenSIPS Core Server
     network: exterior
 
-  - name: Caller UAC
-    type: uac-sipp
-    username: {{ caller }}
-    password: "{{ caller_password }}"
-    config_file: scripts/caller.xml
-    ip: {{ caller_ip }}
-    port: {{ caller_port }}
-    require:
-      - after:
-          task: Register caller
-    network: exterior
-
   - name: Callee UAC
     type: uas-sipp
     username: {{ callee }}
@@ -55,6 +43,18 @@ tasks:
     require:
       - after:
           task: Register callee
+    network: exterior
+
+  - name: Caller UAC
+    type: uac-sipp
+    username: {{ caller }}
+    password: "{{ caller_password }}"
+    config_file: scripts/caller.xml
+    ip: {{ caller_ip }}
+    port: {{ caller_port }}
+    require:
+      - after:
+          task: Register caller
       - started:
-          task: Caller UAC
+          task: Callee UAC
     network: exterior

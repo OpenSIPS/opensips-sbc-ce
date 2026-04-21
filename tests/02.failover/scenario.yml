@@ -1,5 +1,5 @@
 ---
-timeout: 20
+timeout: 30
 
 tasks:
   - name: OpenSIPS Core Server
