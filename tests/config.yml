@@ -3,16 +3,17 @@ init_tasks:
   - name: Add test core server
     type: mysql-client
     script: init_tasks/add_core_server.sh
-    args:
-      - sip:{{ core_ip }}:{{ core_port }}
-      - {{ default_domain }}
+    args: sip:{{ core_ip }}:{{ core_port }}
 
   - name: Add failover server
     type: mysql-client
     script: init_tasks/add_core_server.sh
-    args:
-      - sip:{{ failover_ip }}:{{ failover_port }}
-      - {{ default_domain }}
+    args: sip:{{ failover_ip }}:{{ failover_port }}
+
+  - name: Add SIP mapping
+    type: mysql-client
+    script: init_tasks/add_sip_mapping.sh
+    args: {{ default_domain }}
 
   - name: Reload dispatcher
     type: opensips-mi
@@ -64,16 +65,17 @@ cleanup_tasks:
   - name: Remove test core server
     type: mysql-client
     script: cleanup_tasks/delete_core_server.sh
-    args:
-      - sip:{{ core_ip }}:{{ core_port }}
-      - {{ default_domain }}
+    args: sip:{{ core_ip }}:{{ core_port }}
 
   - name: Remove failover server
     type: mysql-client
     script: cleanup_tasks/delete_core_server.sh
-    args:
-      - sip:{{ failover_ip }}:{{ failover_port }}
-      - {{ default_domain }}
+    args: sip:{{ failover_ip }}:{{ failover_port }}
+
+  - name: Remove SIP mapping
+    type: mysql-client
+    script: cleanup_tasks/delete_sip_mapping.sh
+    args: {{ default_domain }}
 
   - name: Remove PSTN DID in dialplan
     type: mysql-client
