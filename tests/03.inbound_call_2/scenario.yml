@@ -1,5 +1,5 @@
 ---
-timeout: 40
+timeout: 20
 
 init_tasks:
   - name: Add DID mapping

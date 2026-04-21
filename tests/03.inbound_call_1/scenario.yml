@@ -1,5 +1,5 @@
 ---
-timeout: 40
+timeout: 20
 
 init_tasks:
   - name: Add DID mapping
@@ -47,7 +47,7 @@ tasks:
     config_file: scripts/gateway.xml
     ip: {{ gateway_ip }}
     keys:
-      callee_did: 1234567890
+      callee_did: {{ callee_did }}
     network: pstn
     require:
       - after:
