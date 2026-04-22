@@ -25,7 +25,7 @@ tasks:
 
   - name: OpenSIPS Failover Server
     type: opensips
-    config_file: scripts/opensips-core.cfg
+    config_file: scripts/opensips-working.cfg
     args: -p /etc/opensips/scripts/substenv.sh
     ip: {{ failover_ip }}
     network: core

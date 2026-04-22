@@ -4,7 +4,7 @@ timeout: 30
 tasks:
   - name: OpenSIPS Core Server
     type: opensips
-    config_file: scripts/opensips-core.cfg
+    config_file: scripts/opensips-working.cfg
     args: -p /etc/opensips/scripts/substenv.sh
     ip: {{ core_ip }}
     network: core
