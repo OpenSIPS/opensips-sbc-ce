@@ -6,14 +6,12 @@ cd "$(dirname "$0")"
 . functions
 
 TABLE_FILES=(
-    "acc-create.sql"
     "alias_db-create.sql"
     "auth_db-create.sql"
     "dialog-create.sql"
     "dialplan-create.sql"
     "dispatcher-create.sql"
     "permissions-create.sql"
-    "domain-create.sql"
     "drouting-create.sql"
     "presence-create.sql"
     "rtpengine-create.sql"
