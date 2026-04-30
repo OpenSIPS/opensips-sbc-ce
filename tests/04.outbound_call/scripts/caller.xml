@@ -7,11 +7,11 @@
   <send retrans="500">
     <![CDATA[
 
-      INVITE sip:+[did]@[domain];transport=[transport] SIP/2.0
+      INVITE sip:[did]@[domain];transport=[transport] SIP/2.0
       Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch];rport
       Max-Forwards: 70
       Contact: <sip:[caller]@[local_ip]:[local_port]>
-      To: <sip:+[did]@[domain]>
+      To: <sip:[did]@[domain]>
       From: <sip:[caller]@[domain];transport=[transport]>;tag=[call_number]
       Call-ID: [scenario]-[run_id]:///[call_id]
       CSeq: 1 INVITE
@@ -49,11 +49,11 @@
   <send>
     <![CDATA[
 
-      ACK sip:+[did]@[domain];transport=[transport] SIP/2.0
+      ACK sip:[did]@[domain];transport=[transport] SIP/2.0
       [last_Via:]
       Max-Forwards: 70
       Contact: <sip:[caller]@[local_ip]:[local_port]>
-      To: <sip:+[did]@[domain]>
+      To: <sip:[did]@[domain]>
       From: <sip:[caller]@[domain];transport=[transport]>;tag=[call_number]
       Call-ID: [scenario]-[run_id]:///[call_id]
       CSeq: 1 ACK
@@ -64,11 +64,11 @@
   <send retrans="500">
     <![CDATA[
 
-      INVITE sip:+[did]@[domain];transport=[transport] SIP/2.0
+      INVITE sip:[did]@[domain];transport=[transport] SIP/2.0
       Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch];rport
       Max-Forwards: 70
       Contact: <sip:[caller]@[local_ip]:[local_port]>
-      To: <sip:+[did]@[domain]>
+      To: <sip:[did]@[domain]>
       From: <sip:[caller]@[domain];transport=[transport]>;tag=[call_number]
       Call-ID: [scenario]-[run_id]:///[call_id]
       CSeq: 2 INVITE
@@ -117,7 +117,7 @@
 
       ACK [next_url] SIP/2.0
       Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch];rport
-      To: <sip:+[did]@[domain]>[peer_tag_param]
+      To: <sip:[did]@[domain]>[peer_tag_param]
       From: <sip:[caller]@[domain];transport=[transport]>;tag=[call_number]
       [routes]
       CSeq: 2 ACK
@@ -139,7 +139,7 @@
 
       BYE [next_url] SIP/2.0
       Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch];rport
-      To: <sip:+[did]@[domain]>[peer_tag_param]
+      To: <sip:[did]@[domain]>[peer_tag_param]
       From: <sip:[caller]@[domain];transport=[transport]>;tag=[call_number]
       [routes]
       CSeq: 3 BYE
