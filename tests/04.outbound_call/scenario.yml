@@ -53,4 +53,5 @@ tasks:
           task: Register caller
       - started:
           task: Gateway UAS
+          wait: 5
     network: exterior
