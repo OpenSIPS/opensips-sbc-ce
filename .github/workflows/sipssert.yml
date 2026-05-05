@@ -1,0 +1,57 @@
+---
+name: Run SIPssert tests
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 2 * * Mon'
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Setup Environment
+      run: |
+        HOST_IP=$(hostname -I | cut -d ' ' -f 1)
+        sed "s/^HOST_IP=.*/HOST_IP=$HOST_IP/g" -i .env
+        while read line; do
+          [ "$line" = "" ] && continue;
+          echo "$line" >> $GITHUB_ENV
+        done < .env
+      shell: bash
+
+    - name: Setup Docker Compose
+      uses: hoverkraft-tech/compose-action@v2.0.2
+
+    - name: Ensure All Containers Are Running
+      run: |
+        echo "Checking container statuses..."
+        BAD_CONTAINERS=$(docker ps -a --filter "status=exited" --filter "status=dead" --filter "status=restarting" --format '{{.Names}}')
+        if [ -n "$BAD_CONTAINERS" ]; then
+          echo "The following containers are not running properly:"
+          echo "$BAD_CONTAINERS"
+          docker ps -a
+          exit 1
+        fi
+        echo "All containers are running."
+        docker ps
+
+    - name: Prepare SIPssert
+      uses: OpenSIPS/SIPssert/.github/actions/Prepare_SIPssert@main
+      with:
+        sipssert-repo: OpenSIPS/SIPssert
+
+    - name: Run Test
+      uses: OpenSIPS/SIPssert/.github/actions/Run_Tests@main
+      with:
+        directory: tests
+        tests: .
