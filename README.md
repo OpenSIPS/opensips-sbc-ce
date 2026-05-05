@@ -1,93 +1,103 @@
-# SBC
+# OpenSIPS SBC - Community Edition
 
+[![Run SIPSsert tests](https://github.com/OpenSIPS/opensips-sbc-ce/actions/workflows/sipssert.yml/badge.svg)](https://github.com/OpenSIPS/opensips-sbc-ce/actions/workflows/sipssert.yml)
 
+This project contains a fully functional OpenSIPS setup used as a Session Border Controller
+that provides the following features:
 
-## Getting started
+* SIP Proxy with **support for UDP and TLS**
+* **topology hiding** for all calls
+* **dialplans** for SIP user and DID formats
+* **NAT traversal** with automatic detection and contact fixing
+* **RTPEngine** for media relay
+* **mid-registrar** to throttle and manage endpoint registrations towards the core server and to resolve contacts when routing calls to users
+* **primary/failover routing** across core servers with automatic failover
+* **PSTN routing** via dynamic routing with gateways and rules
+* **dialog management** with database-persistent session state
+* **SIP digest authentication** for registered endpoints
+* **source-based access control** via blacklist filtering
+* **OPTIONS keepalive** for endpoint health monitoring
+* **call statistics** tracking for inbound and outbound calls
+* **HTTP and FIFO management interfaces**
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Getting Started
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+The simplest way to get the project running is to setup [Docker](https://www.docker.com/) on your host and then run:
 
-## Add your files
+``` shell
+git clone --recursive https://github.com/OpenSIPS/opensips-sbc-ce.git
+cd opensips-sbc-ce
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+# configure your IP addresses in .env before launching the containers
+PRIVATE_IP=10.0.0.23; sed -i 's/#HOST_PRIVATE_IP/'$PRIVATE_IP'/g' .env
+PUBLIC_IP=1.2.3.4; sed -i 's/#HOST_PUBLIC_IP/'$PUBLIC_IP'/g' .env
+# for local deployments without a public IP, use the private IP for both
 
+docker compose up
 ```
-cd existing_repo
-git remote add origin https://gitlab.opensips-solutions.com:44344/ce/sbc.git
-git branch -M main
-git push -uf origin main
+
+For more information about setup, please check the [Setup
+page](docs/setup.md).
+
+Once everything is initialized, you should be able to access the OpenSIPS
+Control Panel using the following credentials:
+
+* URL: [http://localhost/cp](http://localhost/cp)
+* User: `admin`
+* Password: `opensips`
+
+For more information about provisioning, please check the [Provisioning
+page](docs/provisioning.md).
+
+
+At this point you can follow the [Getting Started](docs/getting-started.md)
+tutorial to test the OpenSIPS SBC Community Edition.
+
+## Testing
+
+OpenSIPS SBC comes with a set of tests that you can run once the setup
+is complete:
+``` shell
+./run-sipssert.sh
 ```
 
-## Integrate with your tools
+For more information, please check the [Testing page](docs/testing.md).
 
-- [ ] [Set up project integrations](https://gitlab.opensips-solutions.com:44344/ce/sbc/-/settings/integrations)
+## OpenSIPS
 
-## Collaborate with your team
+OpenSIPS configuration is developed in a separate git repository that can be
+found [here](https://github.com/OpenSIPS/opensips-sbc-ce-config.git).
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+## Documentation
 
-## Test and Deploy
+Documentation pages contain the following topics:
 
-Use the built-in continuous integration in GitLab.
+* [Setup](docs/setup.md) - contains information about how to install and setup
+* [Getting Started](docs/getting-started.md) - show how you can use the
+SBC to test certain scenarios
+* [Components](docs/components.md) - list of components used in the project
+* [Provisioning](docs/provisioning.md) - useful information about provisioning
+the platform
+* [Testing](docs/testing.md) - information about testing the platform
+* [Devel](docs/devel.md) - information about development
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
 
-***
+## Contribute
 
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+This project is Community driven, therefore any contribution is welcome. Feel
+free to open a pull request for any fix/feature you find useful.
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+<!-- License source -->
+[License-GPLv3]: https://www.gnu.org/licenses/gpl-3.0.en.html "GNU GPLv3"
+[Logo-CC_BY]: https://i.creativecommons.org/l/by/4.0/88x31.png "Creative Common Logo"
+[License-CC_BY]: https://creativecommons.org/licenses/by/4.0/legalcode "Creative Common License"
+
+The `OpenSIPS SBC Community Edition` source code is licensed under the [GNU General Public License v3.0][License-GPLv3]
+
+All documentation files (i.e. `.md` extension) are licensed under the [Creative Common License 4.0][License-CC_BY]
+
+![Creative Common Logo][Logo-CC_BY]
+
+© 2026 - SIP Point Consulting SRL
