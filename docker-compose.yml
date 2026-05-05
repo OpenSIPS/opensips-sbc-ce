@@ -1,7 +1,7 @@
 services:
   mysql:
     build:
-      context: .etc/mysql/image
+      context: ./etc/mysql/image
     container_name: mysql
     command:
       - --bind-address=127.0.0.1,${HOST_IP}
