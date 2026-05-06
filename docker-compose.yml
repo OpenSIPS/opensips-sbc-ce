@@ -21,7 +21,7 @@ services:
     network_mode: host
 
   opensips:
-    image: opensips/opensips:cp-all-tools
+    image: opensips/opensips:sbc-ce
     container_name: opensips
     volumes:
       - ./etc/opensips:/etc/opensips
