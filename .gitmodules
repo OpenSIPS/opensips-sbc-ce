@@ -1,0 +1,3 @@
+[submodule "etc/opensips"]
+	path = etc/opensips
+	url = https://github.com/OpenSIPS/opensips-sbc-ce-config
