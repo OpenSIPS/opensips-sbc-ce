@@ -172,10 +172,6 @@ $config_modules 	= array (
 				"enabled"		=> true,
 				"name"			=> "SIP Mappings"
 			),
-			"dispatcher"	=> array(
-				"enabled"	=> True,
-				"name"		=> "Core Servers"
-			),
 			"dialplan_dispatcher_did"	=> array(
 				"enabled"	=> True,
 				"name"		=> "DID Mappings"
