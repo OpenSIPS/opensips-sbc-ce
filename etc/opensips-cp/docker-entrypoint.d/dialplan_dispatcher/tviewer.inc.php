@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2014 OpenSIPS Project
+ * Copyright (C) 2026 SIP Point Consulting SRL
  *
  * This file is part of opensips-cp, a free Web Control Panel Application for
  * OpenSIPS SIP server.
