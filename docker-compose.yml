@@ -37,7 +37,6 @@ services:
   opensips-cp:
     build:
       context: ./etc/opensips-cp/image
-      dockerfile_inline: FROM opensips/opensips-cp:latest
     container_name: opensips-cp
     env_file:
       - .env
