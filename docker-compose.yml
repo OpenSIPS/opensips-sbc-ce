@@ -21,7 +21,7 @@ services:
     network_mode: host
 
   opensips:
-    image: ghcr.io/opensips/opensips-sbc-ce-config/opensips:sbc-ce
+    image: ghcr.io/opensips/opensips:sbc-ce
     container_name: opensips
     volumes:
       - ./etc/opensips:/etc/opensips
