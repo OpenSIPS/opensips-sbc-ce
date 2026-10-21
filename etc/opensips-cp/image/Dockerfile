@@ -1,1 +1,1 @@
-FROM ghcr.io/opensips/opensips-cp:latest
+FROM ghcr.io/opensips/opensips-cp:9.3.6
